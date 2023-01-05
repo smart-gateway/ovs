@@ -9,7 +9,8 @@ class ovs(
   String $package_ensure = 'installed',
   String $tools_ensure = 'installed',
   Boolean $dpdk_enable = false,
-  String $service_name = 'openvswitch-switch.service'
+  String $service_name = 'openvswitch-switch.service',
+  Array[String] $path = ['/usr/local/sbin','/usr/local/bin','/usr/sbin','/usr/bin','/sbin','/bin'],
 ) {
 
   # Ensure class declares subordinate classes
