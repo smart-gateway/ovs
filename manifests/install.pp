@@ -7,6 +7,12 @@
 class ovs::install {
   if $::ovs::package_manage {
 
+    # Ensure ethtool is installed
+    package { 'ensure that required ovs module package ethtool is installed':
+      name   => 'ethtool',
+      ensure => present,
+    }
+
     # Set the name of the package based on if dpdk is enabled
     $ovs_package = $::ovs::dpdk_enable ? {
       true    => 'openvswitch-switch-dpdk',
