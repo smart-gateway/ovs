@@ -6,8 +6,8 @@
 #   include ovs
 class ovs(
   Boolean $package_manage = true,
-  String $package_ensure = 'installed',
-  String $tools_ensure = 'installed',
+  String $package_ensure = 'present',
+  String $tools_ensure = 'present',
   Boolean $dpdk_enable = false,
   String $service_name = 'openvswitch-switch.service',
   Array[String] $path = ['/usr/local/sbin','/usr/local/bin','/usr/sbin','/usr/bin','/sbin','/bin'],
