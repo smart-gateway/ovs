@@ -4,5 +4,23 @@
 #
 # @example
 #   include ovs
-class ovs {
+class ovs(
+  Boolean $package_manage = true,
+  String $package_ensure = 'installed',
+  String $tools_ensure = 'installed',
+  Boolean $dpdk_enable = false,
+  String $service_name = 'openvswitch-switch.service'
+) {
+
+  # Ensure class declares subordinate classes
+  contain ovs::install
+  contain ovs::config
+  contain ovs::service
+
+  # Order operations
+  anchor { '::ovs::begin': }
+  -> Class['::ovs::install']
+  -> Class['::ovs::config']
+  -> Class['::ovs::service']
+  -> anchor { '::ovs::end': }
 }
