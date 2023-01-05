@@ -5,7 +5,7 @@
 # @example
 #   include ovs::service
 class ovs::service {
-  $desired_state = $ovs::package_ensure ? {
+  $desired_state = $::ovs::package_ensure ? {
     'absent'   => false,
     'purged'   => false,
     'disabled' => false,
@@ -14,7 +14,7 @@ class ovs::service {
 
   # Setup service state
   service { 'ensure that the ovs service is in the desired state':
-    name   => $ovs::service_name,
+    name   => $::ovs::service_name,
     ensure => $desired_state,
   }
 }
