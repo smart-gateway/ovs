@@ -37,11 +37,11 @@ define ovs::vswitch(
     }
 
     # Create virtual ports
-    $virtual_ports.each | $port_name, $port_details | {
-      ovs::virtual_port { "create virtual port ${port_name}":
+    $virtual_ports.each | Integer $index, Hash $port | {
+      ovs::virtual_port { "create virtual port ${port[name]}":
         ensure    => $ensure,
-        port_name => $port_name,
-        port_vlan => $port_details[vlan],
+        port_name => $port[name],
+        port_vlan => $port[vlan],
         vswitch   => $name,
       }
     }
@@ -57,11 +57,11 @@ define ovs::vswitch(
     }
 
     # Remove virtual ports from the ovs switch
-    $virtual_ports.each | $port_name, $port_details | {
-      ovs::virtual_port { "remove virtual port ${port_name}":
+    $virtual_ports.each | Integer $index, String $port | {
+      ovs::virtual_port { "remove virtual port ${port[name]}":
         ensure    => $ensure,
-        port_name => $port_name,
-        port_vlan => $port_details[vlan],
+        port_name => $port[name],
+        port_vlan => $port[vlan],
         vswitch   => $name,
       }
     }
