@@ -28,7 +28,7 @@ define ovs::vswitch(
     $ports.each | Integer $index, String $port | {
       # Add port to the ovs switch
       exec { "add port ${port} to ${name}":
-        command => "ovs-vstl add-port ${name} ${port}",
+        command => "ovs-vsctl add-port ${name} ${port}",
         path    => $::ovs::path,
         unless  => "ovs-vsctl port-to-br ${port}",
       }
@@ -53,7 +53,7 @@ define ovs::vswitch(
     # Remove ports from the ovs switch
     $ports.each | Integer $index, String $port | {
       exec { "del port ${port} on ${name}":
-        command => "ovs-vstl del-port ${name} ${port}",
+        command => "ovs-vsctl del-port ${name} ${port}",
         path    => $::ovs::path,
         onlyif  => "ovs-vsctl port-to-br ${port}"
       }
