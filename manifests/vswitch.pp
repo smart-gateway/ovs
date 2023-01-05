@@ -27,36 +27,46 @@ define ovs::vswitch(
 
     $ports.each | Integer $index, String $port | {
       # Add port to the ovs switch
-      exec { "add port ${port} to ${name}":
-        command => "ovs-vsctl add-port ${name} ${port}",
-        path    => $::ovs::path,
-        unless  => "ovs-vsctl port-to-br ${port}",
+      ovs::physical_port { "create phsyical port ${port}":
+        port_name => $port,
+        vswitch   => $name,
+        ensure    => $ensure,
       }
-
-      if $ensure != 'disabled' {
-        # Enable the port
-        exec { "enable ovs switch ${name} port ${port}":
-          command => "ip link set dev ${port} up",
-          path    => $::ovs::path,
-          unless  => "ip link show ${port} | grep -q ',UP'",
-        }
-      } else {
-        # Disable the port
-        exec { "disable ovs switch ${name} port ${port}":
-          command => "ip link set dev ${port} down",
-          path    => $::ovs::path,
-          onlyif  => "ip link show ${port} | grep -q ',UP'",
-        }
-      }
+      # exec { "add port ${port} to ${name}":
+      #   command => "ovs-vsctl add-port ${name} ${port}",
+      #   path    => $::ovs::path,
+      #   unless  => "ovs-vsctl port-to-br ${port}",
+      # }
+      #
+      # if $ensure != 'disabled' {
+      #   # Enable the port
+      #   exec { "enable ovs switch ${name} port ${port}":
+      #     command => "ip link set dev ${port} up",
+      #     path    => $::ovs::path,
+      #     unless  => "ip link show ${port} | grep -q ',UP'",
+      #   }
+      # } else {
+      #   # Disable the port
+      #   exec { "disable ovs switch ${name} port ${port}":
+      #     command => "ip link set dev ${port} down",
+      #     path    => $::ovs::path,
+      #     onlyif  => "ip link show ${port} | grep -q ',UP'",
+      #   }
+      # }
     }
   } else {
     # Remove ports from the ovs switch
     $ports.each | Integer $index, String $port | {
-      exec { "del port ${port} on ${name}":
-        command => "ovs-vsctl del-port ${name} ${port}",
-        path    => $::ovs::path,
-        onlyif  => "ovs-vsctl port-to-br ${port}"
+      ovs::physical_port { "remove phsyical port ${port} from ${name}":
+        port_name => $port,
+        vswitch   => $name,
+        ensure    => $ensure,
       }
+      # exec { "del port ${port} on ${name}":
+      #   command => "ovs-vsctl del-port ${name} ${port}",
+      #   path    => $::ovs::path,
+      #   onlyif  => "ovs-vsctl port-to-br ${port}"
+      # }
     }
 
     # Remove the ovs switch
