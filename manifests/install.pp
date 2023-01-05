@@ -8,14 +8,14 @@ class ovs::install {
   if $ovs::package_manage {
 
     # Set the name of the package based on if dpdk is enabled
-    $name = $::ovs::dpdk_enable ? {
+    $ovs_package = $::ovs::dpdk_enable ? {
       true    => 'openvswitch-switch-dpdk',
       default => 'openvswitch-switch'
     }
 
     # Ensure that the switch package is in the desired state
     package { 'ensure that the switch component of openvswitch is in the desired state':
-      name   => $name,
+      name   => $ovs_package,
       ensure => $package_ensure,
     }
 
