@@ -47,13 +47,13 @@ define ovs::virtual_port (
 
     # Set the tap interface to up if not disabled
     if $ensure != 'disabled' {
-      exec { 'set the virtual interface port status to up':
+      exec { "set the virtual interface port ${port_name} status to up":
         command => "ip link set dev ${port_name} up",
         path    => $::ovs::path,
         unless  => "ip link show ${port} | grep -q ',UP'",
       }
     } else {
-      exec { 'set the virtual interface port status to down':
+      exec { "set the virtual interface port ${port_name} status to down":
         command => "ip link set dev ${port_name} down",
         path    => $::ovs::path,
         onlyif  => "ip link show ${port} | grep -q ',UP'",

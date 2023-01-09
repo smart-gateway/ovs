@@ -48,13 +48,13 @@ define ovs::vswitch(
 
     # Set the switch to up unless it is disabled
     if $ensure != 'disabled' {
-      exec { 'set the virtual switchstatus to up':
+      exec { "set the virtual switch ${name} status to up":
         command => "ip link set dev ${name} up",
         path    => $::ovs::path,
         unless  => "ip link show ${name} | grep -q ',UP'",
       }
     } else {
-      exec { 'set the virtual switch status to down':
+      exec { "set the virtual switch ${name} status to down":
         command => "ip link set dev ${name} down",
         path    => $::ovs::path,
         onlyif  => "ip link show ${name} | grep -q ',UP'",
