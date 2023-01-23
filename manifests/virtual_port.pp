@@ -39,7 +39,7 @@ define ovs::virtual_port (
     }
 
     # Add port to vswitch
-    exec { "add port ${port_vlan} ${tag_arg} to ${vswitch}":
+    exec { "add port ${port_name} ${tag_arg} to ${vswitch}":
       command => "ovs-vsctl add-port ${vswitch} ${port_name} ${tag_arg}",
       path    => $::ovs::path,
       unless  => "ovs-vsctl port-to-br ${port_name}",
